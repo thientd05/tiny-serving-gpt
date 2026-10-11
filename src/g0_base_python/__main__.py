@@ -1,9 +1,9 @@
 """CLI chạy hệ thống serving trên một kịch bản tải.
 
-Ví dụ:
-  .venv/bin/python -m serving --config stages/G0-base-python/g0.json \
+Ví dụ (chạy từ root của repo):
+  .venv/bin/python src/g0_base_python --config src/g0_base_python/g0.json \
       --workload alpaca --n 200 --pattern poisson --rate 2.0
-  .venv/bin/python -m serving --serve --port 8000        # lớp HTTP demo
+  .venv/bin/python src/g0_base_python --serve --port 8000        # lớp HTTP demo
 """
 from __future__ import annotations
 
@@ -13,23 +13,25 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+HERE = Path(__file__).resolve().parent
+SRC = HERE.parent
+ROOT = SRC.parent
+sys.path.insert(0, str(SRC))
 
-from common.config import ServingConfig                        # noqa: E402
+from g0_base_python.config import ServingConfig                        # noqa: E402
 from common.gpuinfo import GpuMonitor, cuda_vram, host_ram     # noqa: E402
 from common.metrics import RunRecord, RunWriter, git_commit, summary  # noqa: E402
-from common.model import load_model                            # noqa: E402
+from g0_base_python.model import load_model                            # noqa: E402
 from common.workload import Replay, build_replay, load_workload  # noqa: E402
-from serving.engine import Engine                              # noqa: E402
-from serving.request import Request                            # noqa: E402
+from g0_base_python.engine import Engine                              # noqa: E402
+from g0_base_python.request import Request                            # noqa: E402
 
 
 def build_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(prog="serving", description=__doc__,
+    p = argparse.ArgumentParser(prog="g0_base_python", description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--config", type=Path,
-                   default=ROOT / "stages" / "G0-base-python" / "g0.json")
+                   default=HERE / "g0.json")
     p.add_argument("--workload", default="alpaca")
     p.add_argument("--n", type=int, default=200, help="số request")
     p.add_argument("--pattern", default="poisson",
@@ -58,7 +60,7 @@ def main() -> None:
     model, tok = load_model(cfg)
 
     if a.serve:
-        from serving.server import serve
+        from g0_base_python.server import serve
         serve(Engine(cfg, model, tok), port=a.port)
         return
 

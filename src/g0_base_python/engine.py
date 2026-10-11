@@ -30,10 +30,10 @@ from collections import deque
 import torch
 from transformers import StoppingCriteria, StoppingCriteriaList
 
-from common.config import ServingConfig
+from g0_base_python.config import ServingConfig
 from common.metrics import BatchRecord, RequestRecord
-from common.model import greedy_config
-from serving.request import Request
+from g0_base_python.model import greedy_config
+from g0_base_python.request import Request
 
 
 def attn_score_bytes(batch: int, seq_len: int, n_heads: int) -> int:

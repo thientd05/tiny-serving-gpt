@@ -37,26 +37,35 @@ Không giai đoạn nào được tuyên bố "nhanh hơn" mà không có số �
 ## Bố trí mã nguồn
 
 ```
-common/     nạp model, bộ chỉ số, phát lại workload, đọc trạng thái máy, cấu hình
-serving/    hệ thống serving — MỘT codebase duy nhất, phát triển dần qua các giai đoạn
-stages/     mỗi giai đoạn một thư mục: cấu hình bật/tắt cơ chế + ghi chú riêng của nó
-tests/      kiểm chức năng (chạy không cần GPU, dùng model giả)
+src/
+  common/            thước đo dùng chung: phát lại kịch bản tải, ghi số đo, đọc trạng thái máy
+  g0_base_python/    hệ thống ở giai đoạn G0 — trọn bộ, tự chạy được, kèm tests/ và cấu hình
+  g1_compiled/       (chưa có) G0 + đúng một cơ chế mới
+  ...
+  g11_cuda_kernels/  (chưa có) bản tối ưu nhất
+  production/        (chưa có) mã G11 + API FastAPI để chạy thật
 ```
+
+Mỗi giai đoạn giữ **trọn bộ mã của riêng nó** trong một thư mục. Giai đoạn sau bắt đầu
+bằng cách copy giai đoạn trước rồi thêm đúng một cơ chế, nên có thể đặt hai thư mục cạnh
+nhau để thấy chính xác cơ chế mới đã đổi những gì, và chạy lại bất kỳ giai đoạn nào để đo
+lại. Giai đoạn đã xong thì không sửa nữa. Mọi giai đoạn bị đo bằng cùng một bộ công cụ ở
+`src/common/`, để số đo giữa các giai đoạn so được với nhau.
 
 ## Chạy
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 
-# chạy một kịch bản tải qua hệ thống
-.venv/bin/python -m serving --config stages/G0-base-python/g0.json \
+# chạy một kịch bản tải qua hệ thống G0
+.venv/bin/python src/g0_base_python --config src/g0_base_python/g0.json \
     --workload alpaca --n 200 --pattern poisson --rate 2.0
 
-# kiểm chức năng (không cần GPU)
-.venv/bin/python -m pytest tests/ -q
+# kiểm chức năng của mọi giai đoạn (không cần GPU, dùng model giả)
+.venv/bin/python -m pytest src -q
 
-# lớp HTTP để thử tay (không dùng khi đo — xem serving/server.py)
-.venv/bin/python -m serving --serve --port 8000
+# lớp HTTP để thử tay (không dùng khi đo — xem src/g0_base_python/server.py)
+.venv/bin/python src/g0_base_python --serve --port 8000
 curl -s localhost:8000/health
 ```
 

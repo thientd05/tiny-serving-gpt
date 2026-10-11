@@ -14,13 +14,13 @@ from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+SRC = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(SRC))
 
-from common.config import ServingConfig          # noqa: E402
-from serving.engine import Engine                # noqa: E402
-from serving.request import Request              # noqa: E402
-from tests.fake_model import FakeModel, FakeTok  # noqa: E402
+from g0_base_python.config import ServingConfig          # noqa: E402
+from g0_base_python.engine import Engine                # noqa: E402
+from g0_base_python.request import Request              # noqa: E402
+from g0_base_python.tests.fake_model import FakeModel, FakeTok  # noqa: E402
 
 
 def mk_engine(**kw) -> Engine:

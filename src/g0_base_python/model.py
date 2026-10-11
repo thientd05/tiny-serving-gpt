@@ -17,7 +17,7 @@ from typing import Any
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
 
-from common.config import ServingConfig
+from g0_base_python.config import ServingConfig
 
 DTYPES = {"float16": torch.float16, "bfloat16": torch.bfloat16,
           "float32": torch.float32}

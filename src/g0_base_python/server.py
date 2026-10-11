@@ -15,8 +15,8 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-from serving.engine import Engine
-from serving.request import Request
+from g0_base_python.engine import Engine
+from g0_base_python.request import Request
 
 
 def serve(engine: Engine, port: int = 8000) -> None:
