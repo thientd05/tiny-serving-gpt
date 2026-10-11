@@ -1,0 +1,26 @@
+# Môi trường ảo: .venv/  — tạo bằng: python3 -m venv .venv
+# Mọi lệnh python gọi qua .venv/bin/python
+
+# --- Nhóm 1: sinh workload, đọc dataset
+numpy
+pyarrow            # đọc parquet của CNN/DailyMail
+transformers==5.19.0
+tokenizers
+huggingface_hub
+safetensors
+
+# --- Nhóm 2: chạy inference
+# Khóa phiên bản sau khi ĐO trên GPU thật, không chọn theo phỏng đoán.
+# GTX 1650 là sm75 (Turing, KHÔNG có Tensor Core), driver 580.178.04.
+#
+# Đã kiểm trên máy (xem .claude/env_report.md):
+#   torch.cuda.get_arch_list() = ['sm_75','sm_80','sm_86','sm_90','sm_100','sm_120']
+#   → wheel mặc định của PyPI (bản cu130) CÓ sm_75, chạy được GPU này.
+#
+# dtype chốt là bfloat16, cũng do đo: trên GPU này bf16 nhanh hơn fp16 từ 2 đến
+# 5 lần ở mọi batch size, vì cuBLAS chọn cho fp16 một kernel kiểu Tensor Core
+# (volta_fp16_s884gemm) mà phần cứng này không có. Chi tiết: REPORT-G0.md.
+torch==2.14.1
+
+# --- Nhóm 3: kiểm thử
+pytest

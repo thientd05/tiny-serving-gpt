@@ -1,3 +1,140 @@
+# ============================================================
+# Repo này chỉ public MÃ NGUỒN. Mọi thứ nặng hoặc riêng tư đều chặn.
+# Git không ignore được theo dung lượng, nên phải chặn theo loại file.
+# Cần đưa một file bị chặn lên repo: git add -f <file>
+# ============================================================
+
+# --- File làm việc riêng của Claude + kế hoạch + báo cáo ---
 CLAUDE.md
+.claude/
+REPORT*.md
+report*.md
+
+# --- Thư mục nặng đã có ---
 models/
-papers/**/*.pdf
+data/
+papers/
+.venv/
+
+# --- Trọng số & checkpoint model ---
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+*.ggml
+*.onnx
+*.engine
+*.plan
+*.npy
+*.npz
+*.h5
+*.msgpack
+
+# --- Dataset & dữ liệu dạng cột ---
+*.parquet
+*.arrow
+*.feather
+*.jsonl
+*.tfrecord
+*.db
+*.sqlite
+*.sqlite3
+
+# --- File nén ---
+*.zip
+*.tar
+*.tar.*
+*.tgz
+*.gz
+*.bz2
+*.xz
+*.zst
+*.7z
+*.rar
+
+# --- Kết quả benchmark, log, kết quả chạy ---
+results/
+runs/
+outputs/
+output/
+logs/
+artifacts/
+checkpoints/
+*.log
+nohup.out
+# JSON thì không chặn hết (còn file cấu hình), chỉ chặn JSON kết quả
+*result*.json
+*metric*.json
+*bench*.json
+*sweep*.json
+*workload*.json
+core
+core.*
+
+# --- Output của công cụ profiling (rất nặng) ---
+*.qdstrm
+*.qdrep
+*.nsys-rep
+*.ncu-rep
+*.nvvp
+*.prof
+*.trace
+*.sqlite-journal
+
+# --- Biên dịch CUDA / C++ ---
+build/
+dist/
+*.o
+*.obj
+*.so
+*.so.*
+*.a
+*.dylib
+*.dll
+*.exe
+*.cubin
+*.ptx
+*.fatbin
+*.egg-info/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# --- Cache ---
+.cache/
+*.cache
+.hf_cache/
+wandb/
+
+# --- Hình ảnh & tài liệu xuất ra (biểu đồ báo cáo thường nặng) ---
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.gif
+*.mp4
+*.html
+
+# --- Bí mật: .env của dự án kia có HF_TOKEN, không để lọt ---
+.env
+.env.*
+*.key
+*.pem
+secrets*
+
+# --- Rác hệ thống / editor ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/

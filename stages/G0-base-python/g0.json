@@ -1,0 +1,13 @@
+{
+  "model_path": "/home/thienta/code/tiny-serving-gpt/models/Llama-3.2-1B-Instruct",
+  "dtype": "bfloat16",
+  "attn_impl": "eager",
+  "device": "cuda",
+  "batch_size": 1,
+  "batch_timeout_s": 0.0,
+  "max_context": 1792,
+  "ignore_eos": true,
+  "seed": 0,
+  "run_id": "",
+  "note": "G0 base. B=1 va dtype bfloat16 chot TU SO DO, khong phai mac dinh: quet B=1,2,4,8,16 thi B=1 thang ca ve do tre va thong luong. max_context=1792 nam duoi tran attention eager da do (1845 token o B=1). Chi tiet: REPORT-G0.md"
+}
